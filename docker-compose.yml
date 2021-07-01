@@ -14,26 +14,20 @@ services:
     networks:
       - default
   pattern-pedia-api:
-    image: patternpedia/patternrepo-api:latest
+    image:  patternpedia/patternrepo-api:v1.0.5
     environment:
       JDBC_DATABASE_URL: db
       JDBC_DATABASE_USERNAME: postgres
       JDBC_DATABASE_PASSWORD: postgres
-      LATEX_RENDERER_HOST_NAME: latex-renderer
-      LATEX_RENDERER_PORT: 8082
-
-      # activate correct application properties
-      SPRING_PROFILES_ACTIVE: docker
     ports:
-      - "1977:1977"
+      - "8080:8080"
     networks:
       - default
     depends_on:
       - db
-#      - latex-renderer
     restart: on-failure
   pattern-pedia-ui:
-    image: patternpedia/patternrepo-ui:latest
+    image: patternpedia/patternrepo-ui:v1.0.3
     depends_on:
       - config-server
     environment:
@@ -41,9 +35,12 @@ services:
       # from the container itself we have to specify localhost here
       # and **not** the container name
       PATTERN_ATLAS_API_HOST_NAME: localhost
-      PATTERN_ATLAS_API_PORT: 1977
+      PATTERN_ATLAS_API_PORT: 8080
       LATEX_RENDERER_HOST_NAME: localhost
-      LATEX_RENDERER_PORT: 5030
+      LATEX_RENDERER_PORT: 8082
+
+      # activate correct application properties
+      SPRING_PROFILES_ACTIVE: docker
     ports:
       - "4200:80"
   config-server:
@@ -60,9 +57,9 @@ services:
       - default
   # used by the pattern atlas to render latex
   latex-renderer:
-    image: planqk/latex-renderer:latest
+    image: planqk/latex-renderer:v1.0.1
     ports:
-      - "5030:5030"
+      - "8083:8082"
 networks:
   default:
     driver: bridge
