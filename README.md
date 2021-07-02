@@ -6,7 +6,7 @@
 
 Clone the repository:
 
-```git clone https://github.com/IAC2-Project/pattern-pedia-docker.git```
+```git clone https://github.com/IAC2-Project/pattern-atlas-docker.git```
 
 ### Run the pattern repository:
 
